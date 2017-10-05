@@ -1,0 +1,259 @@
+############################# Open #################################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Mar_Open ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as Mar_Open FROM Clientdatabase_M_A_Data WHERE status between 2 and 4 and sent_month = 3 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_o3 ENGINE = Log AS select *,Mar_Open from Clientdatabase_M_A_Unique a any left join Mar_Open b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table Mar_Open;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE April_Open ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as April_Open FROM Clientdatabase_M_A_Data WHERE status between 2 and 4 and sent_month = 4 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_o4 ENGINE = Log AS select *,April_Open from Clientdatabase_M_A_Data_o3 a any left join April_Open b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table April_Open;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_o3;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE May_Open ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as May_Open FROM Clientdatabase_M_A_Data WHERE status between 2 and 4 and sent_month = 5 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_o5 ENGINE = Log AS select *,May_Open from Clientdatabase_M_A_Data_o4 a any left join May_Open b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table May_Open;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_o4;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE June_Open ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as June_Open FROM Clientdatabase_M_A_Data WHERE status between 2 and 4 and sent_month = 6 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_o6 ENGINE = Log AS select *,June_Open from Clientdatabase_M_A_Data_o5 a any left join June_Open b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table June_Open;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_o5;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE July_Open ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as July_Open FROM Clientdatabase_M_A_Data WHERE status between 2 and 4 and sent_month = 7 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_o7 ENGINE = Log AS select *,July_Open from Clientdatabase_M_A_Data_o6 a any left join July_Open b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table July_Open;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_o6;"
+
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE August_Open ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as August_Open FROM Clientdatabase_M_A_Data WHERE status between 2 and 4 and sent_month = 8 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_o8 ENGINE = Log AS select *,August_Open from Clientdatabase_M_A_Data_o7 a any left join August_Open b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table August_Open;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_o7;"
+
+#Open_Count is the table for Open Count on the month basis.
+
+clickhouse-client -d Clientdatabase --query="create table Open__Count ENGINE=Log AS SELECT rcpt_email_in_Min, if(Mar_Open>0,1,0) as Mar_O, if(April_Open>0,1,0) as Apr_O, if(May_Open>0,1,0) as May_O, if(June_Open>0,1,0) as Jun_O, if(July_Open>0,1,0) as Jul_O, if(August_Open>0,1,0) as Aug_O from Clientdatabase_M_A_Data_o8;"
+
+#################### Sent #####################################
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Mar_Sent ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as Mar_Sent FROM Clientdatabase_M_A_Data WHERE status !=0  and sent_month = 3 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_S3 ENGINE = Log AS select *,Mar_Sent from Clientdatabase_M_A_Unique a any left join Mar_Sent b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table Mar_Sent;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE April_Sent ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as April_Sent FROM Clientdatabase_M_A_Data WHERE status !=0 and  sent_month = 4 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_S4 ENGINE = Log AS select *,April_Sent from Clientdatabase_M_A_Data_S3 a any left join April_Sent b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table April_Sent;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_S3;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE May_Sent ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as May_Sent FROM Clientdatabase_M_A_Data WHERE status !=0 and   sent_month = 5 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_S5 ENGINE = Log AS select *,May_Sent from Clientdatabase_M_A_Data_S4 a any left join May_Sent b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table May_Sent;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_S4;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE June_Sent ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as June_Sent FROM Clientdatabase_M_A_Data WHERE status !=0 and  sent_month = 6 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_S6 ENGINE = Log AS select *,June_Sent from Clientdatabase_M_A_Data_S5 a any left join June_Sent b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table June_Sent;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_S5;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE July_Sent ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as July_Sent FROM Clientdatabase_M_A_Data WHERE status !=0  and  sent_month = 7 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_S7 ENGINE = Log AS select *,July_Sent from Clientdatabase_M_A_Data_S6 a any left join July_Sent b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table July_Sent;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_S6;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE August_Sent ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as August_Sent FROM Clientdatabase_M_A_Data WHERE status !=0  and sent_month = 8 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_S8 ENGINE = Log AS select *,August_Sent from Clientdatabase_M_A_Data_S7 a any left join August_Sent b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table August_Sent;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_S7;"
+
+
+clickhouse-client -d Clientdatabase --query="create table Sent__Count ENGINE=Log AS SELECT rcpt_email_in_Min, if(Mar_Sent>0,1,0) as Mar_S, if(April_Sent>0,1,0) as Apr_S, if(May_Sent>0,1,0) as May_S, if(June_Sent>0,1,0) as Jun_S, if(July_Sent>0,1,0) as Jul_S, if(August_Sent>0,1,0) as Aug_S from Clientdatabase_M_A_Data_S8;"
+
+############################################# Click ######################################################################################
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Mar_Click ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as Mar_Click FROM Clientdatabase_M_A_Unique WHERE status =3  and sent_month = 3 group by rcpt_email_in_Min;"
+
+
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_c3 ENGINE = Log AS select *,Mar_Click from Clientdatabase_M_A_Unique a any left join Mar_Click b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table Mar_Click;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE April_Click ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as April_Click FROM Clientdatabase_M_A_Data WHERE status=3 and sent_month = 4 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_c4 ENGINE = Log AS select *,April_Click from Clientdatabase_M_A_Data_c3 a any left join April_Click b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table April_Click;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_c3;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE May_Click ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as May_Click FROM Clientdatabase_M_A_Data WHERE status =3  and sent_month = 5 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_c5 ENGINE = Log AS select *,May_Click from Clientdatabase_M_A_Data_c4 a any left join May_Click b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table May_Click;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_c4;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE June_Click ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as June_Click FROM Clientdatabase_M_A_Data WHERE status=3 and  sent_month = 6 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_c6 ENGINE = Log AS select *,June_Click from Clientdatabase_M_A_Data_c5 a any left join June_Click b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table June_Click;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_c5;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE July_Click ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as July_Click FROM Clientdatabase_M_A_Data WHERE status=3 and  sent_month = 7 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_c7 ENGINE = Log AS select *,July_Click from Clientdatabase_M_A_Data_c6 a any left join July_Click b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table July_Click;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_c6;"
+
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE August_Click ENGINE = Log AS SELECT rcpt_email_in_Min, count(1) as August_Click FROM Clientdatabase_M_A_Data WHERE status=3 and  sent_month = 8 group by rcpt_email_in_Min;"
+clickhouse-client -d Clientdatabase --query="create table Clientdatabase_M_A_Data_c8 ENGINE = Log AS select *,August_Click from Clientdatabase_M_A_Data_c7 a any left join August_Click b using(rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="drop table August_Click;"
+clickhouse-client -d Clientdatabase --query="drop table Clientdatabase_M_A_Data_c7;"
+
+
+
+############################################# Master Table ###############################################################################
+clickhouse-client -d Clientdatabase --query="create table Click__Count ENGINE=Log AS SELECT rcpt_email_in_Min, if(Mar_Click>0,1,0) as Mar_C, if(April_Click>0,1,0) as Apr_C, if(May_Click>0,1,0) as May_C, if(June_Click>0,1,0) as Jun_C, if(July_Click>0,1,0) as Jul_C, if(August_Click>0,1,0) as Aug_C from Clientdatabase_M_A_Data_c8;"
+
+
+
+
+
+create table sentOpen ENGINE=Log AS select rcpt_email_in_Min, smar, sapr, smay, sjun, sjul, saug, omar, oapr,omay, ojun, ojul, oaug from (select rcpt_email_in_Min, Mar_Sent as smar,  April_Sent as sapr, May_Sent as smay, June_Sent as sjun, July_Sent as sjul, August_Sent as saug from Clientdatabase_M_A_Data_S8) a any left join (select rcpt_email_in_Min, Mar_Open as omar, April_Open as oapr, May_Open as omay, June_Open as ojun, July_Open as ojul , August_Open as oaug from Clientdatabase_M_A_Data_o8) b using (rcpt_email_in_Min);
+
+
+create table SentOpenClick ENGINE=Log AS select rcpt_email_in_Min, smar, sapr, smay, sjun, sjul, saug, omar, oapr, omay, ojun, ojul, oaug, cmar, capr, cmay, cjun, cjul, caug from sentOpen a any left join (select rcpt_email_in_Min, Mar_Click as cmar, April_Click as capr, May_Click as cmay, June_Click as cjun, July_Click as cjul, August_Click as caug from Clientdatabase_M_A_Data_CC8) b  using (rcpt_email_in_Min);
+
+
+###############################################################################  Open Class  #####################################################
+
+
+Create table Open_Rate ENGINE=Log AS SELECT rcpt_email_in_Min,(omar*100/smar) as ORMar,(oapr*100/sapr) as ORApr,(omay*100/smay) as ORMay,(ojun*100/sjun) as ORJun,(ojul*100/sjul) as ORJul,(oaug*100/saug) as ORAug from SentOpenClick;
+
+Create table Click_Rate ENGINE=Log AS SELECT rcpt_email_in_Min,(cmar*100/smar) as CRMar,(capr*100/sapr) as CRApr,(cmay*100/smay) as CRMay,(cjun*100/sjun) as CRJun,(cjul*100/sjul) as CRJul,(caug*100/saug) as CRAug from SentOpenClick;
+
+CREATE TABLE OPen_Class ENGINE=Log AS SELECT rcpt_email_in_Min,(if ORMar>40,4,(if ORMar >20,3,(if ORMar > 20,2,(if ORMar > 5,1,0)))) as ORMar FROM Open_Rate
+
+
+##############################################################################
+
+
+
+rcpt_email_in_Min────────────────┬─smar─┬─sapr─┬─smay─┬─sjun─┬─sjul─┬─saug─┬─omar─┬─oapr─┬─omay─┬─ojun─┬─ojul─┬─oaug─┬─cmar─┬─capr─┬─cmay─┬─cjun─┬─cjul─┬─caug─┐
+│ 92e4da9a985cdbdc4742a11fcfe3c46e │    0 │    0 │    0 │    3 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │
+│ f9286b0469422cbb001dbfefad11552e │    0 │    0 │    2 │    3 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 │    0 
+
+
+# Sent__Count =>  Mar_S, Apr_S, May_S, Jun_S, Jul_S, Aug_S 
+#Clientdatabase_M_A_Data_S8 => 	rcpt_email_in_Min, Mar_Sent, April_Sent, May_Sent, June_Sent, July_Sent,August_Sent
+#Clientdatabase_M_A_Data_o8 =>   rcpt_email_in_Min,Mar_Open,April_Open,May_Open,June_Open,July_Open,August_Open
+#Clientdatabase_M_A_Data_c8 =>   rcpt_email_in_Min, Mar_Click, April_Click,May_Click,June_Click,July_Click,August_Click
+
+############################## SENT #########################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE SENT_1 ENGINE=Log AS SELECT *, Mar_S, Apr_S, May_S, Jun_S, Jul_S, Aug_S from Clientdatabase_M_A_Data_S8 a any left join Sent__Count b using (rcpt_email_in_Min);"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE OPEN_1 ENGINE=Log AS SELECT *, Mar_S, Apr_S, May_S, Jun_S, Jul_S, Aug_S from Clientdatabase_M_A_Data_o8 a any left join Sent__Count b using (rcpt_email_in_Min);"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE CLICK_1 ENGINE=Log AS SELECT *, Mar_S, Apr_S, May_S, Jun_S, Jul_S, Aug_S from Clientdatabase_M_A_Data_CC8 a any left join Sent__Count b using (rcpt_email_in_Min);"
+
+################### Mar Sent ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Mar_Cohort_Sent ENGINE=Log AS SELECT sum(Mar_Sent) as March, sum(April_Sent) as April, sum(May_Sent) as May, sum(June_Sent) as June, sum(July_Sent) as July, sum(August_Sent) as August  from SENT_1 where Mar_S =1 ;"
+
+
+################### Mar Open ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Mar_Cohort_Open ENGINE=Log AS SELECT sum(Mar_Open) as March, sum(April_Open) as April, sum(May_Open) as May, sum(June_Open) as June, sum(July_Open) as July, sum(August_Open) as August  from OPEN_1 where Mar_S =1 ;"
+
+
+################### Mar Click ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Mar_Cohort_Click ENGINE=Log AS SELECT sum(Mar_Click) as March, sum(April_Click) as April, sum(May_Click) as May, sum(June_Click) as June, sum(July_Click) as July, sum(August_Click) as August  from CLICK_1 where Mar_S =1 ;"
+
+################### April Sent ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE April_Cohort_Sent ENGINE=Log AS SELECT sum(April_Sent) as April, sum(May_Sent) as May, sum(June_Sent) as June, sum(July_Sent) as July, sum(August_Sent) as August  from SENT_1 where Mar_S =0 and Apr_S >0;"
+
+################### April Open ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE April_Cohort_Open ENGINE=Log AS SELECT sum(April_Open) as April, sum(May_Open) as May, sum(June_Open) as June, sum(July_Open) as July, sum(August_Open) as August  from OPEN_1 where Mar_S =0 and Apr_S>0 ;"
+
+################### April Click ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE April_Cohort_Click ENGINE=Log AS SELECT sum(April_Click) as April, sum(May_Click) as May, sum(June_Click) as June, sum(July_Click) as July, sum(August_Click) as August  from CLICK_1 where Mar_S =0 and Apr_S ;"
+
+
+################### May Sent ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE May_Cohort_Sent ENGINE=Log AS SELECT sum(May_Sent) as May, sum(June_Sent) as June, sum(July_Sent) as July, sum(August_Sent) as August  from SENT_1 where Mar_S =0 and Apr_S =0 and May_S >0;"
+
+################### May Open ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE May_Cohort_Open ENGINE=Log AS SELECT sum(May_Open) as May, sum(June_Open) as June, sum(July_Open) as July, sum(August_Open) as August  from OPEN_1 where Mar_S =0 and Apr_S =0 and May_S >0;"
+
+
+################### May Click ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE May_Cohort_Click ENGINE=Log AS SELECT sum(May_Click) as May, sum(June_Click) as June, sum(July_Click) as July, sum(August_Click) as August  from CLICK_1 where Mar_S =0 and Apr_S=0 and May_S >0;"
+
+################### June Sent ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE June_Cohort_Sent ENGINE=Log AS SELECT sum(June_Sent) as June, sum(July_Sent) as July, sum(August_Sent) as August  from SENT_1 where Mar_S =0 and Apr_S =0 and May_S =0 and Jun_S>0;"
+
+################### June Open ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE June_Cohort_Open ENGINE=Log AS SELECT sum(June_Open) as June, sum(July_Open) as July, sum(August_Open) as August  from OPEN_1 where Mar_S =0 and Apr_S =0 and May_S =0 and Jun_S >0;"
+
+
+################### June Click ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE June_Cohort_Click ENGINE=Log AS SELECT sum(June_Click) as June, sum(July_Click) as July, sum(August_Click) as August  from CLICK_1 where Mar_S =0 and Apr_S=0 and May_S =0 and Jun_S > 0;"
+
+################### July Sent ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE July_Cohort_Sent ENGINE=Log AS SELECT sum(July_Sent) as July, sum(August_Sent) as August  from SENT_1 where Mar_S =0 and Apr_S =0 and May_S =0 and Jun_S=0 and Jul_S >0;"
+
+################### July Open ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE July_Cohort_Open ENGINE=Log AS SELECT sum(July_Open) as July, sum(August_Open) as August  from OPEN_1 where Mar_S =0 and Apr_S =0 and May_S =0 and Jun_S =0 and Jul_S>0;"
+
+
+################### July Click ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE July_Cohort_Click ENGINE=Log AS SELECT sum(July_Click) as July, sum(August_Click) as August  from CLICK_1 where Mar_S =0 and Apr_S=0 and May_S =0 and Jun_S =0 and Jul_S >0;"
+
+################### August Sent ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Aug_Cohort_Sent ENGINE=Log AS SELECT sum(August_Sent) as August  from SENT_1 where Mar_S =0 and Apr_S =0 and May_S =0 and Jun_S=0 and Jul_S =0 and Aug_S >0;"
+
+################### August Open ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Aug_Cohort_Open ENGINE=Log AS SELECT sum(August_Open) as August  from OPEN_1 where Mar_S =0 and Apr_S =0 and May_S =0 and Jun_S =0 and Jul_S=0 and Aug_S>0;"
+
+
+################### August Click ###################
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Aug_Cohort_Click ENGINE=Log AS SELECT sum(August_Click) as August  from CLICK_1 where Mar_S =0 and Apr_S=0 and May_S =0 and Jun_S =0 and Jul_S =0 and Aug_S >0;"
+
+
+
+
+
+
+############################## Unique Users  Customer Journey ###########################
+select count(distinct(rcpt_email_in_Min)) from Clientdatabase_M_A_Data_S8 where August_Sent>0 and April_Sent>0 ; 
+
+
+
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_CLASS_Mar ENGINE=Log AS SELECT  rcpt_email_in_Min,if(CRMar>40,4,if(CRMar>21,3,if(CRMar>5,2,if(CRMar>0,1,0))))as Mar_CC from Click_Rate;"
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_Class_1 ENGINE=Log AS SELECT *,Mar_CC from Clientdatabase_M_A_Unique a any left join Click_CLASS_Mar b using (rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_Mar;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_CLASS_Apr ENGINE=Log AS SELECT  rcpt_email_in_Min,if(CRApr>40,4,if(CRApr>21,3,if(CRApr>5,2,if(CRApr>0,1,0))))as April_CC from Click_Rate;"
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_Class_2 ENGINE=Log AS SELECT *,April_CC from Click_Class_1 a any left join Click_CLASS_Apr b using (rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_Apr;"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_1;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_CLASS_May ENGINE=Log AS SELECT  rcpt_email_in_Min,if(CRMay>40,4,if(CRMay>21,3,if(CRMay>5,2,if(CRMay>0,1,0))))as May_CC from Click_Rate;"
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_Class_3 ENGINE=Log AS SELECT *, May_CC from Click_Class_2 a any left join Click_CLASS_May b using (rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_May;"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_2;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_CLASS_June ENGINE=Log AS SELECT  rcpt_email_in_Min,if(CRJun>40,4,if(CRJun>21,3,if(CRJun>5,2,if(CRJun>0,1,0))))as June_CC from Click_Rate;"
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_Class_4 ENGINE=Log AS SELECT *,June_CC from Click_Class_3 a any left join Click_CLASS_June b using (rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_June;"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_3;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_CLASS_July ENGINE=Log AS SELECT  rcpt_email_in_Min,if(CRJul>40,4,if(CRJul>21,3,if(CRJul>5,2,if(CRJul>0,1,0))))as July_CC from Click_Rate;"
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_Class_5 ENGINE=Log AS SELECT *,July_CC from Click_Class_4 a any left join Click_CLASS_July b using (rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_July;"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_4;"
+
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_CLASS_August ENGINE=Log AS SELECT  rcpt_email_in_Min,if(CRAug>40,4,if(CRAug>21,3,if(CRAug>5,2,if(CRAug>0,1,0))))as August_CC from Click_Rate;"
+clickhouse-client -d Clientdatabase --query="CREATE TABLE Click_Class ENGINE=Log AS SELECT *,August_CC from Click_Class_5 a any left join Click_CLASS_August b using (rcpt_email_in_Min);"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_August;"
+clickhouse-client -d Clientdatabase --query="DROP TABLE Click_CLASS_5;"
+
+
+
+CREATE TABLE CLASS_O_C ENGINE=Log AS SELECT *,Mar_CC,April_CC,May_CC,June_CC,July_CC,August_CC FROM Open_CLASS a any left join Click_Class b using(rcpt_email_in_Min);
+
+
+
+Master_Table 
+
+smar  sapr smay sjun sjul saug omar oapr omay ojun ojul oaug cmar capr cmay cjun cjul caug Mar_C April_OC May_OC June_OC July_OC August_OC Mar_CC  April_CC May_CC June_CC July_CC August_CC
